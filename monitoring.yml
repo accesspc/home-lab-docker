@@ -126,6 +126,12 @@ configs:
             - target_label: __address__
               replacement: blackbox:9115
 
+          static_configs:
+            - targets:
+                - reiciunas.dev
+                - rubicbit.com
+                - scoachingtherapy.com
+
         - job_name: node
 
           static_configs:
