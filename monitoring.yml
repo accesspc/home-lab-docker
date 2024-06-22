@@ -3,7 +3,7 @@ name: monitoring
 
 services:
   blackbox:
-    image: prom/blackbox-exporter:latest
+    image: docker.io/prom/blackbox-exporter:latest
     configs:
       - source: blackbox.config.yml
         target: /etc/blackbox_exporter/config.yml
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:latest
+    image: docker.io/grafana/grafana:latest
     configs:
       - source: grafana.custom.ini
         target: /etc/grafana/custom.ini
@@ -31,7 +31,7 @@ services:
       - /share/Docker/monitoring/grafana:/var/lib/grafana:rw
 
   prometheus:
-    image: prom/prometheus:latest
+    image: docker.io/prom/prometheus:latest
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.config.file=/etc/prometheus/web_config.yml
