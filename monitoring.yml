@@ -3,7 +3,7 @@ name: monitoring
 
 services:
   blackbox:
-    image: prom/blackbox-exporter
+    image: prom/blackbox-exporter:latest
     configs:
       - source: blackbox.config.yml
         target: /etc/blackbox_exporter/config.yml
