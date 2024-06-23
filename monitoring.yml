@@ -101,15 +101,11 @@ configs:
     content: |
       ---
       global:
-        # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-        scrape_interval: 30s
-        # Evaluate rules every 15 seconds. The default is every 1 minute.
-        evaluation_interval: 30s
-        # scrape_timeout is set to the global default (10s).
+        scrape_interval: 15s
+        evaluation_interval: 15s
 
       scrape_configs:
-        # The job name is added as a label `job=<job_name>` to any timeseries scraped
-        # from this config.
+
         - job_name: blackbox
           metrics_path: /probe
           params:
@@ -120,11 +116,13 @@ configs:
             - source_labels:
                 - __address__
               target_label: __param_target
+
             - source_labels:
                 - __param_target
               target_label: instance
-            - target_label: __address__
-              replacement: blackbox:9115
+
+            - replacement: blackbox:9115
+              target_label: __address__
 
           static_configs:
             - targets:
@@ -132,53 +130,63 @@ configs:
                 - rubicbit.com
                 - scoachingtherapy.com
 
+        - job_name: docker
+
+          static_configs:
+            - labels:
+                instance: store
+              targets:
+                - 192.168.68.3:9323
+
         - job_name: mysqld
 
           static_configs:
-            - targets:
-                - 10.16.0.115:9104
-              labels:
+            - labels:
                 instance: aws-mysql01
+              targets:
+                - 10.16.0.115:9104
 
         - job_name: node
 
           static_configs:
-            - targets:
-                - 10.16.0.115:9100
-              labels:
+            - labels:
                 instance: aws-mysql01
-            - targets:
-                - 10.16.4.50:9100
-              labels:
+              targets:
+                - 10.16.0.115:9100
+
+            - labels:
                 instance: aws-vpn01
-            - targets:
-                - 10.16.4.129:9100
-              labels:
+              targets:
+                - 10.16.4.50:9100
+
+            - labels:
                 instance: aws-web01
-            - targets:
-                - 100.85.71.13:9100
-              labels:
+              targets:
+                - 10.16.4.129:9100
+
+            - labels:
                 instance: fh01
-            - targets:
-                - 192.168.68.3:9100
-              labels:
+              targets:
+                - 100.85.71.13:9100
+
+            - labels:
                 instance: store
+              targets:
+                - 192.168.68.3:9100
 
         - job_name: prometheus
-
           scheme: https
 
           static_configs:
-            - targets:
-                - localhost:9090
-              labels:
+            - labels:
                 instance: prometheus
+              targets:
+                - 192.168.68.3:9090
 
           tls_config:
             insecure_skip_verify: true
 
         - job_name: wcac
-
           scheme: http
 
           static_configs:
@@ -188,9 +196,6 @@ configs:
   prometheus.web_config.yml:
     content: |
       ---
-      # basic_auth_users:
-      #   prometheus: sha
-
       http_server_config:
         http2: true
 
