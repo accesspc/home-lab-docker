@@ -30,6 +30,24 @@ services:
       - /usr/builtin/etc/certificate:/certs:ro
       - /share/Docker/monitoring/grafana:/var/lib/grafana:rw
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    command:
+      - --path.rootfs=/host/root
+      - --path.sysfs=/host/sys
+      - --no-collector.wifi
+      - --no-collector.hwmon
+      - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
+      - --collector.netclass.ignored-devices=^(veth.*)$
+    ports:
+      - 9100:9100
+    pull_policy: build
+    restart: unless-stopped
+    user: root
+    volumes:
+      - /:/host/root:ro
+      - /sys:/host/sys:ro
+
   prometheus:
     image: prom/prometheus:latest
     command:
