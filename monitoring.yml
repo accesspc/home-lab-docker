@@ -177,7 +177,7 @@ configs:
 
             - labels:
                 instance: fw03
-              target:
+              targets:
                 - 192.168.68.13: 9100
 
             - labels:
