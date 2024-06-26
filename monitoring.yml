@@ -34,7 +34,6 @@ services:
       - --path.rootfs=/host/root
       - --path.sysfs=/host/sys
       - --no-collector.wifi
-      - --no-collector.hwmon
       - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/pods/.+)($|/)
       - --collector.netclass.ignored-devices=^(veth.*)$
     ports:
